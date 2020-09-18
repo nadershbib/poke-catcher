@@ -4,6 +4,7 @@ import  './index.css'
 function App() {
   const [pokedex, setPokedex] = useState([]);
   const [wildPokemon, setWildPokemon] = useState({});
+ 
 
   useEffect(() => {
     encounterWildPokemon();
@@ -15,14 +16,25 @@ function App() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
   const encounterWildPokemon = async () => {
+  
     const res = await axios.get(
-      "https://pokeapi.co/api/v2/pokemon/" + pokeId()
+      "https://pokeapi.co/api/v2/pokemon/" +pokeId()
     );
     console.log(res.data);
     setWildPokemon(res.data);
 
-    setPokedex((prevItems) => [...prevItems, res.data]);
+    setPokedex((prevItems) =>{
+         const exists = (prevItems.filter((poke,id)=>poke.id===res.data.id).length>0);
+         if(!exists){
+              return [...prevItems,res.data] 
+         }
+         else{
+           encounterWildPokemon()
+         }
+    });
   };
+   
+  
 
   return (
     <div className="app-wrapper">
@@ -42,7 +54,7 @@ function App() {
           className="sprite"
         />
         <h3>{wildPokemon.name}</h3>
-        <button className="catch-btn">catch</button>
+        <button className="catch-btn" onClick={()=>encounterWildPokemon()}>catch</button>
       </section>
 
       <section className="pokedex-section py-5">
@@ -51,7 +63,7 @@ function App() {
             {pokedex.map((pokemon, id) => {
               console.log(pokedex);
               return (
-                <div key={pokemon.id} className="col col-sm-6 col-md-4">
+                <div key={pokemon.id} className="col-11 my-3  col-sm-6 col-md-4 setMx">
                   <div className="card">
                     <div className="card-img-container text-center poke-card">
                       <img

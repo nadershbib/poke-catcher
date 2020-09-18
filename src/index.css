@@ -264,8 +264,11 @@ background: #F3F3F3;
 }
 
 .card{
-  border-radius: 1.5rem !important;
+  /* outline-bottom-left-radius: 1.5rem !important; */
+  /* outline-bottom-right-radius: 1.5rem !important; */
   min-height: 20vh !important;
+  border-radius: 1rem !important;
+  border: 1px solid black;
   
 }
 
@@ -279,6 +282,8 @@ background: #F3F3F3;
 
 .card-body{
   background-color: #ffffff;
+  border-bottom-left-radius: 1rem !important;
+  border-bottom-right-radius: 1rem !important;
 }
 
 .attack-bar{
@@ -305,3 +310,14 @@ background: #F3F3F3;
   background-color: #6890F0 !important;
 }
 
+
+@media screen and (max-width:500px){
+
+  .setMx{
+     margin:0 auto;
+  }
+
+
+
+
+}
