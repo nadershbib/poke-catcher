@@ -278,7 +278,15 @@ background: #F3F3F3;
   background-color: #f5f3f4;
   border-top-left-radius: 1rem !important;
   border-top-right-radius: 1rem !important;
+  position: relative;
 }
+
+/* .poke-info{
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  
+} */
 
 .card-body{
   background-color: #ffffff;
@@ -311,13 +319,45 @@ background: #F3F3F3;
 }
 
 
-@media screen and (max-width:500px){
-
-  .setMx{
-     margin:0 auto;
+@media screen and (min-width:320px){
+  
+  .fix-alignement{
+    margin-right: 0.5rem!important;      
   }
-
-
-
-
 }
+  
+  @media screen and (min-width:360px){
+    
+    .fix-alignement{
+      margin-right: 1.5rem!important;      
+    }
+    
+    
+  }
+  
+  @media screen and (min-width:375px){
+    
+    .fix-alignement{
+      margin-right: 2.5rem!important;      
+    }
+    
+    
+  }
+@media screen and (min-width:768px){
+  
+  .fix-alignement{
+    margin-right: 3rem!important;      
+  }
+  
+  
+}
+  @media screen and (max-width:500px){
+  
+    .setMx{
+       margin:0 auto;
+    }
+  
+  
+  
+  
+  }

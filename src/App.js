@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import  './index.css'
+import spinner from './spinner.gif';
 function App() {
   const [pokedex, setPokedex] = useState([]);
   const [wildPokemon, setWildPokemon] = useState({});
+  const [loading,setLoading] = useState(false);
+  const [Height,setHeight] = useState(false)
  
 
   useEffect(() => {
@@ -23,11 +26,12 @@ function App() {
   const encounterWildPokemon = async () => {
   
     try {
+      setLoading(true)
       const res = await axios.get(
         "https://pokeapi.co/api/v2/pokemon/" +pokeId() )
-
+        setLoading(false)
         setWildPokemon(res.data)
-  
+          
     }
 
     catch(err){
@@ -52,14 +56,20 @@ function App() {
    
     const checkForDuplicates = (id) =>{
 
-          return pokedex.find(pokemon=>pokemon.id === id)
-
+         if(pokedex.find(pokemon=> pokemon.id ===id)){
+           return true;
+         }
+         else{
+           return false;
+         }
     }
 
      const encounterWildPokemonClick = ()=>{
-
+      document.getElementById("catch-btn").disabled=true
          setPokedex(prevItems=>[...prevItems,wildPokemon])
          encounterWildPokemon()
+       setTimeout(()=>document.getElementById("catch-btn").disabled=false,750);
+      
 
 
      }
@@ -72,6 +82,8 @@ function App() {
       </header>
       <section className="wild-pokemon">
         <h2>Wild Encounter</h2>
+
+        {/* {loading && <img src={spinner} className="sprite" />} */}
         <img
           src={
             "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
@@ -79,10 +91,11 @@ function App() {
             ".png"
           }
           alt="Move to next"
+          onError={encounterWildPokemon}
           className="sprite"
         />
         <h3>{wildPokemon.name}</h3>
-        <button className="catch-btn" onClick={()=>encounterWildPokemonClick()}>catch</button>
+        <button className="catch-btn" id="catch-btn" onClick={()=>encounterWildPokemonClick()}>catch</button>
       </section>
 
       <section className="pokedex-section py-5">
@@ -100,6 +113,7 @@ function App() {
                           pokemon.id +
                           ".png"
                         }
+                        id={pokemon.id}
                         className=""
                         alt=""
                       />
@@ -110,10 +124,20 @@ function App() {
                           ".png"
                         }
                         className=""
+                        id={pokemon.id}
+                        onError={()=>{document.getElementById(pokemon.id).style.position='relative'
+                                     document.getElementById(pokemon.id).style.top='0px'
+                                     document.getElementById(pokemon.id).parentElement.style.height='128px'
+                                     document.getElementById(pokemon.id+"w").style.position='absolute'
+                                     document.getElementById(pokemon.id+"w").style.bottom='0'
+                                     document.getElementById(pokemon.id+"w").style.left='4%'
+                                     document.getElementById(pokemon.id+"a").classList.toggle('fix-alignement')
+                                     }
+                                 }
                         alt=""
                       />
-                      <div className="poke-info d-flex justify-content-around">
-                        <h5 className="poke-name font-italic mr-2">
+                      <div className="poke-info d-flex justify-content-around" id={pokemon.id+"w"}>
+                        <h5 className="poke-name font-italic" id={pokemon.id+"a"}>
                           Name: {pokemon.name}
                         </h5>
                         <h5 className="font-italic"> Type: {pokemon.types[0].type.name}</h5>
