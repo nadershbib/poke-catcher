@@ -66,7 +66,7 @@ function App() {
 
      const encounterWildPokemonClick = ()=>{
       document.getElementById("catch-btn").disabled=true
-         setPokedex(prevItems=>[...prevItems,wildPokemon])
+         setPokedex(prevItems=>[wildPokemon,...prevItems]);
          encounterWildPokemon()
        setTimeout(()=>document.getElementById("catch-btn").disabled=false,750);
       
