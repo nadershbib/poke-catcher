@@ -13,28 +13,56 @@ function App() {
   const pokeId = () => {
     const min = Math.ceil(1);
     const max = Math.floor(1151);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+     let pokeId = Math.floor(Math.random() * (max - min + 1)) + min;
+     console.log(pokeId,'beforeCheck');
+     if(checkForDuplicates(pokeId))
+      pokeId = pokeId();
+     console.log(pokeId,'AfterCheck');
+     return pokeId;
   };
   const encounterWildPokemon = async () => {
   
-    const res = await axios.get(
-      "https://pokeapi.co/api/v2/pokemon/" +pokeId()
-    );
-    console.log(res.data);
-    setWildPokemon(res.data);
+    try {
+      const res = await axios.get(
+        "https://pokeapi.co/api/v2/pokemon/" +pokeId() )
 
-    setPokedex((prevItems) =>{
-         const exists = (prevItems.filter((poke,id)=>poke.id===res.data.id).length>0);
-         if(!exists){
-              return [...prevItems,res.data] 
-         }
-         else{
-           encounterWildPokemon()
-         }
-    });
+        setWildPokemon(res.data)
+  
+    }
+
+    catch(err){
+             console.error(err.message);
+             encounterWildPokemon()
+
+    }
+    
+  
+  
+
+    // setPokedex((prevItems) =>{
+    //      const exists = (prevItems.filter((poke,id)=>poke.id===res.data.id).length>0);
+    //      if(!exists){
+    //           return [...prevItems,res.data] 
+    //      }
+    //      else{
+    //        encounterWildPokemon()
+    //      }
+    // });
   };
    
-  
+    const checkForDuplicates = (id) =>{
+
+          return pokedex.find(pokemon=>pokemon.id === id)
+
+    }
+
+     const encounterWildPokemonClick = ()=>{
+
+         setPokedex(prevItems=>[...prevItems,wildPokemon])
+         encounterWildPokemon()
+
+
+     }
 
   return (
     <div className="app-wrapper">
@@ -54,7 +82,7 @@ function App() {
           className="sprite"
         />
         <h3>{wildPokemon.name}</h3>
-        <button className="catch-btn" onClick={()=>encounterWildPokemon()}>catch</button>
+        <button className="catch-btn" onClick={()=>encounterWildPokemonClick()}>catch</button>
       </section>
 
       <section className="pokedex-section py-5">
